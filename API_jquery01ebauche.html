@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>api</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+
+        const apiUrl = 'https://data.metropole-rouen-normandie.fr/api/explore/v2.1/catalog/datasets/eco-counter-sites/records?limit=30';
+        const apiUrlRennes = 'https://data.rennesmetropole.fr/api/explore/v2.1/catalog/datasets/etat-des-stations-le-velo-star-en-temps-reel/records?limit=60';
+        const apiUrlLille = 'https://data.opendatasoft.com/api/explore/v2.1/catalog/datasets/osm-fr-stations-de-velo-en-libre-service@babel/records?'
+
+        function reussiteGlobal(data, champs) {
+
+            let results = data['results'];
+            let div = document.getElementById("maDiv");
+            results.forEach(element => {
+                div.innerHTML += element[champs] + "<br>"; // cette ligne permet d'afficher les données 
+
+
+            });
+
+            console.log(data);
+        }
+        function reussiteNom(data) {
+
+
+            let results = data['results'];
+            let div = document.getElementById("maDiv");
+            results.forEach(element => {
+                div.innerHTML += element['nom'] + "<br>";
+
+
+            });
+        }
+        function reussiteName(data) {
+
+            let results = data['results'];
+            let div = document.getElementById("maDiv");
+            results.forEach(element => {
+                div.innerHTML += element['name'] + "<br>";
+
+
+            });
+        }
+
+        function echec(error) {
+            console.error('Erreur lors de la récupération des données:', error.statusText);
+
+            let divErr = document.getElementById("maDivErreur");
+            divErr.innerHTML = "Connexion impossible";
+
+        }
+
+        $.ajax(
+            {
+                url: apiUrl,
+                method: 'GET',
+                dataType: 'json',
+                success: reussiteName,
+                error: echec
+            }
+        );
+        $.ajax(
+            {
+                url: apiUrlRennes,
+                method: 'GET',
+                dataType: 'json',
+                success: reussiteNom,
+                error: echec
+            }
+        );
+
+        $.ajax(
+            {
+                url: apiUrlLille,
+                method: 'GET',
+                dataType: 'json',
+                success: reussiteName,
+                error: echec
+            }
+        );
+
+
+    </script>
+</head>
+
+<body>
+
+    <div id="titre"></div>
+    <div id="maDiv">
+
+    </div>
+    <br>
+    <div id="maDivErreur">
+
+    </div>
+</body>
+
+</html>

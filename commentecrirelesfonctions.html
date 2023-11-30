@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fonctions</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        function disBonjour(nom) {
+            // "document" représente notre page web
+            let div = document.getElementById("IDzoneTexte");
+            //Innerhtml sert uniquement à mettre du texte dans la div
+            div.innerHTML = "Bonjour !" + " " + nom;
+        }
+        // Voici une autre facon d'ecrire une fonction. Ici la fonction est déclarée comme une variable
+        var maFonction = function (nom) {
+            let div = document.getElementById("IDzoneTexte");
+            div.innerHTML = "Bonjour !" + " " + nom;
+        }
+        // Une fonction fléchée est une fonction anonyme qui est appelée qu'une seule fois
+
+        var maFonctionFleche = nom => document.getElementById("IDzoneTexte").innerHTML = "Bonjour !" + " " + nom;
+
+    </script>
+</head>
+
+
+
+<body>
+    <button onclick="disBonjour('toto')">go !</button>
+    <div id="IDzoneTexte"></div>
+    <br>
+    <button onclick="maFonctionFleche('tata')">tata !</button>
+    <div id="IDzoneTexte"></div>
+    <br>
+
+
+</body>
+
+</html>

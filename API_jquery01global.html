@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>api</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+
+        // On créé un tableau avec tous les éléments nécessaires pour faire fonctionner notre code
+        var listeVille = [
+            { 'ville': 'Rouen', 'callback': reussiteName, 'champs': 'name', 'apiUrl': 'https://data.metropole-rouen-normandie.fr/api/explore/v2.1/catalog/datasets/eco-counter-sites/records?limit=30' },
+            { 'ville': 'Rennes', 'callback': reussiteNom, 'champs': 'nom', 'apiUrl': 'https://data.rennesmetropole.fr/api/explore/v2.1/catalog/datasets/etat-des-stations-le-velo-star-en-temps-reel/records?limit=60' },
+            { 'ville': 'Lille', 'callback': reussiteName, 'champs': 'name', 'apiUrl': 'https://data.opendatasoft.com/api/explore/v2.1/catalog/datasets/osm-fr-stations-de-velo-en-libre-service@babel/records?Limit=100' },
+        ]
+        // On créé cette fonction car le paramètre qui designe le nom de la station de velo est définit soit par "nom" soit par "name" dans le json
+        //On ajoute donc un 2 eme paramètre "champs" à la fonction réussite
+        function reussiteGlobal(data, champs) {
+
+            let results = data['results'];
+            let div = document.getElementById("maDiv");
+            results.forEach(listeVille => {
+                div.innerHTML += listeVille[champs] + "<br>";
+
+
+            });
+
+            console.log(data);
+        }
+        // On déclare une fonction pour chaque variation du "champs" (nom et name)
+        function reussiteNom(data) {
+
+
+            reussiteGlobal(data, 'nom')
+
+        }
+        function reussiteName(data) {
+
+
+            reussiteGlobal(data, 'name')
+        }
+
+        function echec(error) {
+
+            console.error('Erreur lors de la récupération des données:', error.statusText);
+            let divErr = document.getElementById("maDivErreur");
+            divErr.innerHTML = "Connexion impossible";
+
+        }
+        // On créé la boucle pour obtenir les noms de toutes les stations de vélo de toutes les villes qui sont dans le tableau ListeVille
+        listeVille.forEach(ville => {
+            $.ajax(
+                {
+                    url: ville['apiUrl'],
+                    method: 'GET',
+                    dataType: 'json',
+                    success: ville['callback'],
+                    error: echec
+                }
+            );
+        });
+
+
+
+    </script>
+</head>
+
+<body>
+
+    <div id="titre"></div>
+    <div id="maDiv">
+
+    </div>
+    <br>
+    <div id="maDivErreur">
+
+    </div>
+</body>
+
+</html>

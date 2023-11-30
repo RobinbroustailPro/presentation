@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        //On déclare l'url de l'api que l'on veut utiliser (ou dans un tableau voir API_jquery01global)
+        const apiUrl = "http://192.168.1.152:8000/api/1234/getNumber";
+
+        // On créé une fonction qui va récupérer les données fournit par l'API
+        function reussite(data) {
+            //Il faut savoir comment le paramètre est déclaré, dans le json, pour le définir dans la variable (ex: "name" et "nom" dans API_jquery01global)
+            let nbr = data['number'];
+            // On récupère l'élément dans la div pour le manipuler. Ici avec innerHTML.
+            let divN = document.getElementById("titre");
+            //Affiche l'élément nbr sur la page (+= : concaténation) et les autres (via la boucle) à la suite en sautant une ligne
+            divN.innerHTML += nbr + "<br>";
+        }
+
+
+        // On créé une fonction qui va récupérer l'erreur
+        function echec(error) {
+            console.error('Erreur lors de la récupération des données:', error.statusText);
+
+            let divErr = document.getElementById("maDivErreur");
+            divErr.innerHTML = "Connexion impossible";
+
+        }
+        //Boucle pour simuler un tirage du loto
+        for (let i = 0; i < 6; i++) {
+            // C'est la partie du code qui fait l'appel de l'api
+            $.ajax(
+                {
+                    url: apiUrl,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: reussite,
+                    error: echec
+                });
+
+        }
+    </script>
+</head>
+
+<body>
+    <!-- On créé une div pour que les résultats soient uniques et puissent être mis en forme avec CSS -->
+    <div id="titre"></div>
+
+    <div id="maDivErreur"></div>
+
+</body>
+
+</html>
